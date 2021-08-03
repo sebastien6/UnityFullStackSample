@@ -44,7 +44,7 @@ docker-compose build
 docker-compose up
 ```
 
-![backend service](https://github.com/sebastien6/UnityFullStackSample/blob/main/img/.png)
+![backend service](https://github.com/sebastien6/UnityFullStackSample/blob/main/img/backend-ready.png)
 
 when the service is ready, the web URL for health check will return 'ok'
 
