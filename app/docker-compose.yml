@@ -1,0 +1,74 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gw
+      args:
+        buildno: 1
+        image: gateway:tag
+    env_file:
+      - .env
+    environment:
+      GRPC_SERVER_ENDPOINT_LISTING: ${GRPC_SERVER_ENDPOINT_LISTING}
+      GRPC_NETWORK: ${GRPC_NETWORK}
+      HTTP_PORT: ${HTTP_PORT}
+      OPENAPIV2_DIR: /app/openapiv2
+      LOG_LEVEL: ${LOG_LEVEL}
+    networks:
+      - unity_app
+    expose:
+      - ${HTTP_PORT}
+    ports:
+      - ${HTTP_PORT}:${HTTP_PORT}
+    restart: unless-stopped
+    depends_on:
+      - listing
+  listing:
+    build:
+      context: .
+      dockerfile: Dockerfile.listing
+      args:
+        buildno: 1
+        image: listing:tag
+    env_file:
+      - .env
+    environment:
+      GRPC_PORT: ${GRPC_PORT}
+      MONGO_CONNECTION_STRING: ${MONGO_CONNECTION_STRING}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      LOG_LEVEL: ${LOG_LEVEL}
+    restart: unless-stopped
+    depends_on:
+      - mongo1
+    networks:
+      - unity_app
+    ports:
+      - ${GRPC_PORT}:${GRPC_PORT}
+  mongo1:
+    image : mongo:5.0-focal
+    container_name: mongo1
+    env_file:
+      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    volumes:
+    - ./mongodb1/:/data/db
+    networks:
+      - unity_app
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+
+networks:
+  unity_app:
+    external: true
+
+volumes:
+  mongodb1:

@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package listing.v1;
+
+option go_package = "./listing/v1";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/empty.proto";
+
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+      title: "listing-api";
+      version: "1.0";
+      contact: {
+        name: "listing";
+        email: "seb.durand6@gmail.com";
+      };
+    };
+    schemes: HTTP;
+    // schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+  };
+
+service GamesService {
+    // list all registered Games
+    rpc GetGames(google.protobuf.Empty) returns (Games) {
+        option (google.api.http) = {
+            get: "/api/v1/games"
+          };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "Retrieve a full list of games";
+            description: "Use this endpoint to retrieve the full list of games";
+        };
+    };
+    // Register a new Game
+    rpc RegisterGame(Game) returns (Game) {
+        option (google.api.http) = {
+            post: "/api/v1/game"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "Create a new game";
+            description: "Use this endpoint to create a single game";
+        };
+    };
+    // Register a list of new Game
+    rpc RegisterGames(Games) returns (Games) {
+        option (google.api.http) = {
+            post: "/api/v1/games"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "Create multiple games";
+            description: "Use this endpoint to create multiple games in a bulk operation";
+        };
+    };
+};
+
+message ID {
+    string id = 1 [(validate.rules).string.min_len = 3];
+}
+
+message UpdateReq {
+    string id = 1 [(validate.rules).string.min_len = 3];
+    Game game = 2;
+}
+
+message Game {
+    string id = 1 [(validate.rules).string.min_len = 3];
+    string category = 2 [(validate.rules).string.min_len = 3];
+    string title = 3 [(validate.rules).string.min_len = 3];
+    string subtitle = 4 [(validate.rules).string.min_len = 3];
+    string description = 5 [(validate.rules).string.min_len = 3]; 
+    repeated Images images = 6;
+    int32 type = 7;
+    repeated string tags = 8 [(validate.rules).repeated = {ignore_empty: true, items: {string: {min_len: 3}}}];;
+    string author = 9 [(validate.rules).string.min_len = 3];
+    string replayBundleUrlJson = 10 [(validate.rules).string = {ignore_empty: true, uri: true}];
+    double duration = 11;
+    bool isDownloadable = 12;
+    bool isStreamable = 13;
+    string version = 14 [(validate.rules).string = {min_len: 3, max_len: 5}];
+};
+
+message Images {
+    string id = 1 [(validate.rules).string = {min_len: 3, max_len: 20}];
+    string url = 2 [(validate.rules).string.uri = true];
+    int32 type = 3;
+}
+
+message StreamGames {
+    Game listings = 1;
+};
+
+message Games {
+    repeated Game listings = 1;
+}

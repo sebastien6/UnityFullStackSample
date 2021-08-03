@@ -1,0 +1,233 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "listing-api",
+    "version": "1.0",
+    "contact": {
+      "name": "listing",
+      "email": "seb.durand6@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "GamesService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/x-ndjson"
+  ],
+  "produces": [
+    "application/json",
+    "application/x-ndjson"
+  ],
+  "paths": {
+    "/api/v1/game": {
+      "post": {
+        "summary": "Create a new game",
+        "description": "Use this endpoint to create a single game",
+        "operationId": "GamesService_RegisterGame",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Game"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Game"
+            }
+          }
+        ],
+        "tags": [
+          "GamesService"
+        ]
+      }
+    },
+    "/api/v1/games": {
+      "get": {
+        "summary": "Retrieve a full list of games",
+        "description": "Use this endpoint to retrieve the full list of games",
+        "operationId": "GamesService_GetGames",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Games"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GamesService"
+        ]
+      },
+      "post": {
+        "summary": "Create multiple games",
+        "description": "Use this endpoint to create multiple games in a bulk operation",
+        "operationId": "GamesService_RegisterGames",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Games"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Games"
+            }
+          }
+        ],
+        "tags": [
+          "GamesService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Game": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Images"
+          }
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "author": {
+          "type": "string"
+        },
+        "replayBundleUrlJson": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double"
+        },
+        "isDownloadable": {
+          "type": "boolean"
+        },
+        "isStreamable": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Games": {
+      "type": "object",
+      "properties": {
+        "listings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Game"
+          }
+        }
+      }
+    },
+    "v1Images": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

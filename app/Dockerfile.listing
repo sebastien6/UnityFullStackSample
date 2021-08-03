@@ -1,0 +1,23 @@
+# Dockerfile for gRPC Go
+FROM golang:1.16-alpine AS build_base
+
+# ENV BUILD_DEPS git build-base unzip libc-dev make autoconf automake libtool gcc 
+ENV BUILD_DEPS git unzip make
+RUN apk add --update --no-cache --virtual .build-deps $BUILD_DEPS
+
+WORKDIR /app
+COPY . /app/.
+RUN make go
+RUN make buildlisting
+
+
+FROM golang:1.16-alpine
+RUN apk add --update --no-cache ca-certificates apk-tools=2.12.6-r0
+
+RUN addgroup -S go && adduser -S go -G go
+RUN chown -R go:go /home/go/
+
+COPY --from=build_base /app/out/listing /app/listing
+
+USER go
+CMD /app/listing -endpoint $GRPC_PORT -mongo-connection-string $MONGO_CONNECTION_STRING -mongo-database $MONGO_DATABASE -mongo-collection $MONGO_COLLECTION -log-level $LOG_LEVEL

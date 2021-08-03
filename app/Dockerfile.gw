@@ -1,0 +1,26 @@
+# Dockerfile for gRPC Go
+FROM golang:1.16-alpine AS build_base
+
+# ENV BUILD_DEPS git build-base unzip libc-dev make autoconf automake libtool gcc 
+ENV BUILD_DEPS git unzip make
+RUN apk add --update --no-cache --virtual .build-deps $BUILD_DEPS
+
+WORKDIR /app
+COPY . /app/.
+RUN make go
+RUN make buildgw
+
+
+FROM golang:1.16-alpine
+RUN apk add --update --no-cache ca-certificates apk-tools=2.12.6-r0
+
+RUN addgroup -S go && adduser -S go -G go
+RUN chown -R go:go /home/go/
+
+COPY --from=build_base /app/out/gateway /app/gateway
+COPY --from=build_base /app/openapiv2 /app/openapiv2
+RUN chmod -R o+rx /app && chown -R go:go /app
+
+USER go
+EXPOSE 8080
+CMD /app/gateway -endpoint $GRPC_SERVER_ENDPOINT_LISTING -network $GRPC_NETWORK -http-port $HTTP_PORT -openapi-dir "/app/openapiv2"
