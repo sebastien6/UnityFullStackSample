@@ -15,7 +15,7 @@ The api version and user input validation was declared as part of the proto file
 ### unity app
 
 - In the folder unity\Assets\Scripts\Runtime a new folder 'RestClient' was created with a file RestClient.cs that contain the code use to make the RestAPI calls.
-- In the file, unity\Assets\Scripts\Test\TestListings.cs, a SerializeField baseUrl was added to set the URL for the backend RespAPI service to call.
+- In the file, unity\Assets\Scripts\Test\TestListings.cs, a SerializeField baseUrl was added to set the URL for the backend RespAPI service to call. (example: http://localhost:8080/api/v1/games)
 
 ![base URL](https://github.com/sebastien6/UnityFullStackSample/blob/main/img/base-url.png)
 

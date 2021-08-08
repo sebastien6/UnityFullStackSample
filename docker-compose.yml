@@ -3,7 +3,7 @@ version: "3.9"
 services:
   gateway:
     build:
-      context: .
+      context: ./app
       dockerfile: Dockerfile.gw
       args:
         buildno: 1
@@ -27,7 +27,7 @@ services:
       - listing
   listing:
     build:
-      context: .
+      context: ./app
       dockerfile: Dockerfile.listing
       args:
         buildno: 1

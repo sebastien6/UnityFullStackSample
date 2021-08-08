@@ -7,12 +7,12 @@ RUN apk add --update --no-cache --virtual .build-deps $BUILD_DEPS
 
 WORKDIR /app
 COPY . /app/.
-RUN make go
+# RUN make go
 RUN make buildgw
 
 
 FROM golang:1.16-alpine
-RUN apk add --update --no-cache ca-certificates apk-tools=2.12.6-r0
+RUN apk add --update --no-cache ca-certificates
 
 RUN addgroup -S go && adduser -S go -G go
 RUN chown -R go:go /home/go/

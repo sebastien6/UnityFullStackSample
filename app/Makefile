@@ -22,7 +22,7 @@ go:
 	go mod tidy
 
 buildgw:
-	go build -o ./out/gateway cmd/gateway/main.go
+	go build -o ./out/gateway -mod vendor cmd/gateway/main.go
 	
 buildlisting:	
-	go build -o ./out/listing cmd/listing/main.go
+	go build -o ./out/listing -mod vendor cmd/listing/main.go
