@@ -8,6 +8,8 @@ import (
 
 	apiv1 "github.com/sebastien6/UnityFullStackSample/app/pkg/api/v1"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -30,6 +32,10 @@ func (s *listingService) GetGames(ctx context.Context, _ *emptypb.Empty) (*apiv1
 
 // RegisterGame a game into the database and return the updated game with its associated ID
 func (s *listingService) RegisterGame(ctx context.Context, game *apiv1.Game) (*apiv1.Game, error) {
+	if err := game.Validate(); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
 	return s.serviceRepo.Store(ctx, game)
 }
 
