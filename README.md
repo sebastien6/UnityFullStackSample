@@ -12,6 +12,8 @@ A layer of abstraction was created between the GRPC service and the database mak
 
 The api version and user input validation was declared as part of the proto file definition.
 
+![base URL](https://github.com/sebastien6/UnityFullStackSample/blob/main/img/flow.png)
+
 ### unity app
 
 - In the folder unity\Assets\Scripts\Runtime a new folder 'RestClient' was created with a file RestClient.cs that contain the code use to make the RestAPI calls.
