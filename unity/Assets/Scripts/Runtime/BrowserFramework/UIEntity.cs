@@ -36,7 +36,7 @@ namespace UnityEngine.Replay
             foreach (var image in m_Images)
             {
                 string url = l.GetImageUrl();
-                HttpClient.Instance.GetTexture(url, (Texture2D texture) => {
+                HttpClient.Instance.Get<Texture2D>(url, (Texture2D texture) => {
                     if (l.IsValidImageType(image.imageType))
                         image.SetImage(texture);
                 });
