@@ -50,7 +50,7 @@ namespace RestClient
 
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                Debug.Log("Network is not Reachable.");
+                Debug.LogError("Network is not Reachable.");
             }
             
             using(UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
