@@ -72,7 +72,7 @@ namespace RestClient
                             if (contentType == "application/json") {
                                 response(webRequest.downloadHandler.text as T);
                             } else {
-                                Debug.Log("received data was not in JSON format");
+                                Debug.LogError("received data was not in JSON format for URL: " + url);
                             }
                         } 
                         
@@ -80,7 +80,7 @@ namespace RestClient
                             if (contentType == "image/png" || contentType == "image/jpeg") 
                                 response(((DownloadHandlerTexture)webRequest.downloadHandler).texture as T);
                         } else {
-                            Debug.Log("received texture was not in JPEG or PNG format");
+                            Debug.LogError("received texture was not in JPEG or PNG format for URL: " + url);
                         }
 
                         break;
