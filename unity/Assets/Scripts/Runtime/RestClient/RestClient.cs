@@ -74,9 +74,7 @@ namespace RestClient
                             } else {
                                 Debug.LogError("received data was not in JSON format for URL: " + url);
                             }
-                        } 
-                        
-                        if (typeof(T).Equals(typeof(Texture2D))) {
+                        } else if (typeof(T).Equals(typeof(Texture2D))) {
                             if (contentType == "image/png" || contentType == "image/jpeg") 
                                 response(((DownloadHandlerTexture)webRequest.downloadHandler).texture as T);
                         } else {
