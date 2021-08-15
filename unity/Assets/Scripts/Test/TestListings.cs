@@ -13,7 +13,7 @@ namespace Unity.Metacast.Demo
     public class TestListings : MonoBehaviour
     {
         // [SerializeField] private TextAsset m_TestJson;
-        [SerializeField] private string baseUrl = "http://localhost:8080/api/v1/listing";
+        [SerializeField] private string baseUrl = "http://localhost:8080/api/v1/games";
 
 
         /// <summary>
