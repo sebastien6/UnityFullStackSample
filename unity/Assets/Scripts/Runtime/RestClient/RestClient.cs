@@ -72,13 +72,15 @@ namespace RestClient
                             if (contentType == "application/json") {
                                 response(webRequest.downloadHandler.text as T);
                             } else {
-                                response("{\"listings\":[{\"title\":\"Error\",\"subtitle\":\"Error fetching data\"}]}" as T);
+                                Debug.Log("received data was not in JSON format");
                             }
                         } 
                         
                         if (typeof(T).Equals(typeof(Texture2D))) {
                             if (contentType == "image/png" || contentType == "image/jpeg") 
                                 response(((DownloadHandlerTexture)webRequest.downloadHandler).texture as T);
+                        } else {
+                            Debug.Log("received texture was not in JPEG or PNG format");
                         }
 
                         break;
