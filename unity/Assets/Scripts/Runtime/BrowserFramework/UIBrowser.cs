@@ -33,21 +33,31 @@ namespace UnityEngine.Replay
         private void CreateListings(string jsonString)
         {
             ListingsContainer allListings = JsonUtility.FromJson<ListingsContainer>(jsonString);
-            List<Listing> listings = new List<Listing>();
+            // List<Listing> listings = new List<Listing>();
+            Dictionary<string, List<Listing>> byCat = new Dictionary<string, List<Listing>>();
             
             foreach (Listing listing in allListings.listings)
             {
-                listings.Add(listing);
+                if (byCat.ContainsKey(listing.category)) {
+                    byCat[listing.category].Add(listing);
+                } else {
+                    byCat.Add(listing.category, new List<Listing>());
+                    byCat[listing.category].Add(listing);
+                }
+                
+//                listings.Add(listing);
             }
 
-            // listings.init();
 
-            UICarousel carousel = FindObjectOfType<UICarousel>();
-            if (carousel != null) {
-                carousel.Init("Category Name Goes Here", listings);
-            } else {
-                Debug.LogError("UICarousel not found");
-            }
+            // foreach(var item in byCat){
+                UICarousel carousel = FindObjectOfType<UICarousel>();
+                if (carousel != null) {
+                    // carousel.Init(item.Key, item.Value);
+                    carousel.Init("live", byCat["live"]);
+                } else {
+                    Debug.LogError("UICarousel not found");
+                }
+            // }
         }
     }
 }
